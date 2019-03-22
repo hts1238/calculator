@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1553263349 source:c:\users\user\documents\prog\c++\calculator\main.cpp
+	<bits/stdc++.h>
+	"parse.h"
+
+1553265164 c:\users\user\documents\prog\c++\calculator\parse.h
+
