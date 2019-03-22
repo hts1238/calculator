@@ -4,7 +4,6 @@
 using namespace std;
 
 class _Parse_ {
-    friend double Parse(const string& s, const bool& _DEBUG_LOG);
 private:
 
     int i = 0;
@@ -183,7 +182,8 @@ private:
         return S;
     }
 
-    double _main(const string& _s, const bool& _DEBUG_LOG) {
+public:
+    double parse(const string& _s, const bool& _DEBUG_LOG) {
         s = _s; DEBUG_LOG = _DEBUG_LOG;
 
         s = formatting(s);
@@ -250,10 +250,7 @@ private:
     }
 };
 
-double Parse(const string& s, const bool& DEBUG_LOG) {
-    _Parse_ P;
-    return P._main(s, DEBUG_LOG);
-}
+_Parse_ Parse;hh
 
 
 #endif // PARSE_H_INCLUDED
