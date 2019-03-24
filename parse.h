@@ -180,21 +180,9 @@ private:
         return S;
     }
 
-public:
-    double parse(const string& _s, const bool& _DEBUG_LOG) {
-        s = _s; DEBUG_LOG = _DEBUG_LOG;
-
-        s = formatting(s);
-        
-        if (DEBUG_LOG) cout << s << "\n";
-
-        if (s.length() == 0) {
-            cout << "Expretion is empty";
-            _break_();
-        }
-
-        /// Main parsing
-        for (i = 0; i < s.length(); i++) {
+    /// Main parsing
+    void main(const string& s) {
+    	for (i = 0; i < s.length(); i++) {
             char ch = s[i];
 
             if (isNum(ch)) {
@@ -236,6 +224,22 @@ public:
         while (ops != NULL) {
             push(res, doit(pop(ops)));
         }
+    }
+
+public:
+    double parse(const string& _s, const bool& _DEBUG_LOG) {
+        s = _s; DEBUG_LOG = _DEBUG_LOG;
+
+        s = formatting(s);
+        
+        if (DEBUG_LOG) cout << s << "\n";
+
+        if (s.length() == 0) {
+            cout << "Expretion is empty";
+            _break_();
+        }
+
+        main(s);
 
         if (DEBUG_LOG) cout << "\n === End Debug log ===\n\n\n";
 
