@@ -75,7 +75,7 @@ private:
     }
 
     /// Get priority of the operator 'ch'
-    int priority(char ch) {
+    int priority(const char& ch) {
         if (ch == ')') return 0;
         if (ch == '+') return 1;
         if (ch == '-') return 1;
@@ -84,13 +84,13 @@ private:
         if (ch == '^') return 3;
         if (ch == '(') return 99;
 
-        cout << "Compilition error; Illegal operator '" << (int)ch << "'";
+        cout << "Compilition error; Illegal operator '" << (char)ch << "'";
         _break_();
         return 0; // This line will be never called
     }
 
     /// Calculate two latest numbers from 'res' using operator 'op'
-    double doit (char op) {
+    double doit (const char& op) {
         if (DEBUG_LOG) cout << " " << op << "\n";
         double a, b;
 
