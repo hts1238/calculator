@@ -127,14 +127,6 @@ private:
 
         if (DEBUG_LOG) cout << "\n === Start Debug log === \n\n";
 
-
-
-        if (brackets != 0) {
-            cout << "Wrong bracket sequence";
-            i--;
-            _break_();
-        }
-
         for (i = 0; i < s.length(); i++) {
             char ch = s[i];
             if (ch == ' ') {
@@ -163,7 +155,7 @@ private:
             if (ch == '-') {
                 if (prev_ch == '(') {
                     S += '0';
-                } else if (!isNum(prev_ch)) {
+                } else if (!isNum(prev_ch) && prev_ch != ')') {
                     cout << "Compilition error! Illegal operator befor '-':";
                     i--;
                     _break_();
@@ -178,6 +170,12 @@ private:
             S += ch;
             prev_ch = ch;
         }
+
+        if (brackets != 0) {
+            cout << "Compilition error! Wrong bracket sequence";
+            _break_();
+        }
+
 
         return S;
     }
