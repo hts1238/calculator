@@ -250,7 +250,7 @@ public:
     }
 };
 
-_Parse_ Parse;hh
+_Parse_ Parse;
 
 
 #endif // PARSE_H_INCLUDED
