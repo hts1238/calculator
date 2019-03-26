@@ -9,8 +9,9 @@ int main() {
     cout << setprecision(12);
 
     string s;
-    //getline(cin, s);
+    while(getline(cin, s)) {
+        cout << " " << s << " = " << parse(s, 1) << "\n";
+    }
 
-    cout << parse(s, 1);
     return 0;
 }
