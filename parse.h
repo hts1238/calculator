@@ -249,21 +249,23 @@ namespace Parse {
 
         if (DEBUG_LOG) cout << "\n === End Debug log ===\n\n\n";
     }
-
-    double parse(const string& _s, const bool& _DEBUG_LOG) {
-        s = _s; DEBUG_LOG = _DEBUG_LOG;
-
-        s = formatting(s);
-
-        main(s);
-
-        if ((*res).next != NULL) {
-            cout << "Something is wrong, sorry ((";
-            _break_();
-        }
-
-        return (*res).field;
-    }
 };
+
+using namespace Parse;
+
+double parse(const string& _s, const bool& _DEBUG_LOG) {
+    s = _s; DEBUG_LOG = _DEBUG_LOG;
+
+    s = formatting(s);
+
+    main(s);
+
+    if ((*res).next != NULL) {
+        cout << "Something is wrong, sorry ((";
+        _break_();
+    }
+
+    return (*res).field;
+}
 
 #endif // PARSE_H_INCLUDED

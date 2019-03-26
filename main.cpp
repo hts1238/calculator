@@ -11,6 +11,6 @@ int main() {
     string s;
     getline(cin, s);
 
-    cout << Parse::parse(s, 1);
+    cout << parse(s, 1);
     return 0;
 }
