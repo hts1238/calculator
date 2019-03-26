@@ -3,9 +3,7 @@
 
 using namespace std;
 
-class _Parse_ {
-private:
-
+namespace Parse {
     int i = 0;
     string s = "";
 
@@ -181,7 +179,7 @@ private:
             cout << "Compilition error! Wrong bracket sequence";
             _break_();
         }
-        
+
         if (DEBUG_LOG) cout << S << "\n";
 
         if (S.length() == 0) {
@@ -252,7 +250,6 @@ private:
         if (DEBUG_LOG) cout << "\n === End Debug log ===\n\n\n";
     }
 
-public:
     double parse(const string& _s, const bool& _DEBUG_LOG) {
         s = _s; DEBUG_LOG = _DEBUG_LOG;
 
@@ -268,8 +265,5 @@ public:
         return (*res).field;
     }
 };
-
-_Parse_ Parse;
-
 
 #endif // PARSE_H_INCLUDED
