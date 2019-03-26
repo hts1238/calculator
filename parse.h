@@ -130,6 +130,9 @@ namespace Parse {
             if (ch == ' ') {
                 continue;
             }
+            if (ch == ':') {
+            	ch = '/';
+            }
             if (ch == '(') brackets++;
             if (ch == ')') {
                 if (brackets == 0 || prev_ch == '(') {
@@ -254,6 +257,7 @@ namespace Parse {
 using namespace Parse;
 
 double parse(const string& _s, const bool& _DEBUG_LOG) {
+	res = NULL; ops = NULL;
     s = _s; DEBUG_LOG = _DEBUG_LOG;
 
     s = formatting(s);
