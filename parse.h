@@ -1,6 +1,11 @@
 #ifndef PARSE_H_INCLUDED
 #define PARSE_H_INCLUDED
 
+#include <iostream>
+#include <cstdio>
+#include <cstdlib>
+#include <math.h>
+
 using namespace std;
 
 namespace Parse {
@@ -45,7 +50,6 @@ namespace Parse {
 
     /// Pop from Stack 'top'
     double pop(Stack*& top) {
-        if (isEmpty(top)) exit(-1);
         Stack* pointer = top;
         top = (*top).next;
         if (DEBUG_LOG) debug();
