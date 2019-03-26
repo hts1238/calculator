@@ -9,7 +9,7 @@ int main() {
     cout << setprecision(12);
 
     string s;
-    getline(cin, s);
+    //getline(cin, s);
 
     cout << parse(s, 1);
     return 0;
