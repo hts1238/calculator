@@ -6,11 +6,12 @@ using namespace std;
 int main() {
     freopen("input.txt", "r", stdin);
     //freopen("output.txt", "w", stdout);
-    cout << setprecision(18);
+    cout << setprecision(12);
 
     string s;
-    getline(cin, s);
+    while(getline(cin, s)) {
+        cout << " " << s << " = " << parse(s, 1) << "\n";
+    }
 
-    cout << Parse.parse(s, 1);
     return 0;
 }

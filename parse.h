@@ -3,9 +3,7 @@
 
 using namespace std;
 
-class _Parse_ {
-private:
-
+namespace Parse {
     int i = 0;
     string s = "";
 
@@ -75,7 +73,7 @@ private:
     }
 
     /// Get priority of the operator 'ch'
-    int priority(char ch) {
+    int priority(const char& ch) {
         if (ch == ')') return 0;
         if (ch == '+') return 1;
         if (ch == '-') return 1;
@@ -84,13 +82,13 @@ private:
         if (ch == '^') return 3;
         if (ch == '(') return 99;
 
-        cout << "Compilition error; Illegal operator '" << (int)ch << "'";
+        cout << "Compilition error; Illegal operator '" << (char)ch << "'";
         _break_();
         return 0; // This line will be never called
     }
 
     /// Calculate two latest numbers from 'res' using operator 'op'
-    double doit (char op) {
+    double doit (const char& op) {
         if (DEBUG_LOG) cout << " " << op << "\n";
         double a, b;
 
@@ -113,7 +111,14 @@ private:
         if (op == '+') return a + b;
         if (op == '-') return a - b;
         if (op == '*') return a * b;
-        if (op == '/') return a / b;
+        if (op == '/') {
+        	if (b == 0) {
+        		cout << "Time error! Division by zero!";
+        		_break_();
+        	}
+        	return a / b;
+        }
+
         if (op == '^') return pow(a, b);
 
         return 0; // This line will be never called
@@ -125,12 +130,15 @@ private:
         char prev_ch = -1;
         int brackets = 0;
 
-        if (DEBUG_LOG) cout << "\n === Start Debug log === \n\n";
+        if (DEBUG_LOG) cout << "\n === Start Debug log === \n\nBefore formatting: " << s << "\nAfter formatting : ";
 
         for (i = 0; i < s.length(); i++) {
             char ch = s[i];
             if (ch == ' ') {
                 continue;
+            }
+            if (ch == ':') {
+            	ch = '/';
             }
             if (ch == '(') brackets++;
             if (ch == ')') {
@@ -142,7 +150,7 @@ private:
             }
 
             if (prev_ch == -1) {
-                if (ch == '-') {
+                if (ch == '-' || ch == '.') {
                     S += '0';
                 }
                 S += ch;
@@ -167,6 +175,12 @@ private:
             if (isNum(ch) && prev_ch == ')') {
                 S += '*';
             }
+            if (ch == '.') {
+            	if (prev_ch == ')') {
+            		S += '*';
+            	}
+            	S += '0';
+            }
             S += ch;
             prev_ch = ch;
         }
@@ -176,57 +190,63 @@ private:
             _break_();
         }
 
+        if (DEBUG_LOG) cout << S << "\n";
 
-        return S;
-    }
-
-public:
-    double parse(const string& _s, const bool& _DEBUG_LOG) {
-        s = _s; DEBUG_LOG = _DEBUG_LOG;
-
-        s = formatting(s);
-        
-        if (DEBUG_LOG) cout << s << "\n";
-
-        if (s.length() == 0) {
+        if (S.length() == 0) {
             cout << "Expretion is empty";
             _break_();
         }
 
-        /// Main parsing
-        for (i = 0; i < s.length(); i++) {
+        return S;
+    }
+
+    /// Main parsing
+    void main(const string& s) {
+    	for (i = 0; i < s.length(); i++) {
             char ch = s[i];
 
             if (isNum(ch)) {
 
-                if (i != 0 && isNum(s[i-1])) {
-                    (*res).field *= 10;
-                    (*res).field += toNum(ch);
-                    if (DEBUG_LOG) debug();
-                } else {
-                    push(res, toNum(ch));
-                }
+            	double num = 0;
+            	long long k = 10;
 
+	            while (isNum(ch)) {
+	            	num *= 10;
+	            	num += toNum(ch);
+	            	ch = s[++i];
+	            }
+
+	            if (ch == '.') {
+	            	ch = s[++i];
+	            	while (isNum(ch)) {
+	            		num += (double)toNum(ch) / k;
+	            		k *= 10;
+	            		ch = s[++i];
+	            	}
+	            }
+
+	            push(res, num);
+
+	            if (i >= s.length()) break;
+	        }
+
+            int priority_ch = priority(ch);
+
+            if (isEmpty(ops) || priority_ch > priority((*ops).field) || ((*ops).field == '(' && ch != ')')) {
+                push(ops, ch);
             } else {
 
-                int priority_ch = priority(ch);
-
-                if (isEmpty(ops) || priority_ch > priority((*ops).field) || ((*ops).field == '(' && ch != ')')) {
-                    push(ops, ch);
-                } else {
-
-                    if (ch == ')') {
-                        while ((*ops).field != '(') {
-                            push(res, doit(pop(ops)));
-                        }
-                        pop(ops);
-
-                    } else {
-                        while (!isEmpty(ops) && (*ops).field != '(' && priority_ch <= priority((*ops).field)) {
-                            push(res, doit(pop(ops)));
-                        }
-                        push(ops, ch);
+                if (ch == ')') {
+                    while ((*ops).field != '(') {
+                        push(res, doit(pop(ops)));
                     }
+                    pop(ops);
+
+                } else {
+                    while (!isEmpty(ops) && (*ops).field != '(' && priority_ch <= priority((*ops).field)) {
+                        push(res, doit(pop(ops)));
+                    }
+                    push(ops, ch);
                 }
             }
         }
@@ -238,17 +258,25 @@ public:
         }
 
         if (DEBUG_LOG) cout << "\n === End Debug log ===\n\n\n";
-
-        if ((*res).next != NULL) {
-            cout << "Something is wrong, sorry ((";
-            _break_();
-        }
-
-        return (*res).field;
     }
 };
 
-_Parse_ Parse;
+using namespace Parse;
 
+double parse(const string& _s, const bool& _DEBUG_LOG) {
+	res = NULL; ops = NULL;
+    s = _s; DEBUG_LOG = _DEBUG_LOG;
+
+    s = formatting(s);
+
+    main(s);
+
+    if ((*res).next != NULL) {
+        cout << "Something is wrong, sorry ((";
+        _break_();
+    }
+
+    return (*res).field;
+}
 
 #endif // PARSE_H_INCLUDED
