@@ -111,7 +111,14 @@ namespace Parse {
         if (op == '+') return a + b;
         if (op == '-') return a - b;
         if (op == '*') return a * b;
-        if (op == '/') return a / b;
+        if (op == '/') {
+        	if (b == 0) {
+        		cout << "Time error! Division by zero!";
+        		_break_();
+        	}
+        	return a / b;
+        }
+
         if (op == '^') return pow(a, b);
 
         return 0; // This line will be never called
@@ -123,7 +130,7 @@ namespace Parse {
         char prev_ch = -1;
         int brackets = 0;
 
-        if (DEBUG_LOG) cout << "\n === Start Debug log === \n\nbefore formatting: " << s << "\nAfter formatting : ";
+        if (DEBUG_LOG) cout << "\n === Start Debug log === \n\nBefore formatting: " << s << "\nAfter formatting : ";
 
         for (i = 0; i < s.length(); i++) {
             char ch = s[i];
