@@ -151,8 +151,8 @@ private:
         if (command == "cbrt") return cbrt(a);
         if (command == "tan") return tan(a);
         if (command == "log") return log(a);
-        if (command == "log2") return log2(a);
-        if (command == "log10") return log10(a);
+        //if (command == "log2") return log2(a);
+        //if (command == "log10") return log10(a);
         if (command == "arcsin") return asin(a);
         if (command == "arccos") return acos(a);
         if (command == "arctan") return atan(a);
@@ -236,7 +236,8 @@ private:
 
         if (S.length() == 0) {
             cout << "Expretion is empty";
-            _break_();
+	        if (DEBUG_LOG) cout << "\n\n === End Debug log ===\n";
+	        exit(0);
         }
 
         return S;
