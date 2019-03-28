@@ -73,7 +73,7 @@ namespace Parse {
 
     /// Check if char 'ch' is number
     bool isNum(const char& ch) {
-        return 0 <= toNum(ch) && toNum(ch) <= 9;
+        return '0' <= ch && ch <= '9';
     }
 
     /// Get priority of the operator 'ch'
