@@ -12,11 +12,11 @@ double parse(const string& _s, const bool& _DEBUG_LOG);
 
 class Parse {
 private:
-    int i = 0;
-    string s = "";
+    int i;
+    string s;
 
     /// Is debug messages will be showing
-    bool DEBUG_LOG = 1;
+    bool DEBUG_LOG;
 
     struct Stack {
         double field;
@@ -236,8 +236,8 @@ private:
 
         if (S.length() == 0) {
             cout << "Expretion is empty";
-	        if (DEBUG_LOG) cout << "\n\n === End Debug log ===\n";
-	        exit(0);
+            if (DEBUG_LOG) cout << "\n\n === End Debug log ===\n";
+            exit(0);
         }
 
         return S;
@@ -334,6 +334,7 @@ private:
 
 public:
     Parse(const string& _s, const bool& _DEBUG_LOG) {
+        i = 0;
         s = _s;
         DEBUG_LOG = _DEBUG_LOG;
 
