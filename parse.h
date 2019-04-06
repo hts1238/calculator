@@ -295,6 +295,11 @@ private:
                         exp += ch;
                         ch = s[++i];
                     }
+                } else {
+                    while (isNum(ch)) {
+                        exp += ch;
+                        ch = s[++i];
+                    }
                 }
 
                 push(res, doCommand(command, parse(exp, DEBUG_LOG)));
