@@ -19,6 +19,7 @@ private:
     bool DEBUG_LOG;
 
     struct Stack {
+        bool type; /// 0 - char, 1 - number
         double field;
         Stack* next;
     };
@@ -31,9 +32,21 @@ private:
         Stack* top1 = res;
         Stack* top2 = ops;
         cout << "\n [ res ] : ";
-        while (top1 != NULL) {cout << top1->field << " "; top1 = top1->next;}
+        while (top1 != NULL) {
+            if (top1->type)
+                cout << (double)top1->field << " ";
+            else
+                cout << (char)top1->field << " ";
+            top1 = top1->next;
+        }
         cout << "\n [ ops ] : ";
-        while (top2 != NULL) {cout << (char)top2->field << " "; top2 = top2->next;}
+        while (top2 != NULL) {
+            if (top2->type)
+                cout << (double)top2->field << " ";
+            else
+                cout << (char)top2->field << " ";
+            top2 = top2->next;
+        }
         cout << "\n";
     }
 
@@ -43,8 +56,9 @@ private:
     }
 
     /// Push 'elem' into Stack 'top'
-    void push(Stack*& top, const double& elem) {
+    void push(Stack*& top, const double& elem, const bool& type) {
         Stack* pointer = (Stack*)malloc(sizeof(Stack));
+        (*pointer).type = type;
         (*pointer).field = elem;
         (*pointer).next = top;
         top = pointer;
@@ -66,7 +80,7 @@ private:
         for (int j = 0; j < i; j++) cout << " ";
         cout << "^";
         if (DEBUG_LOG) cout << "\n\n === End Debug log ===\n";
-        exit(-1);
+        exit(1);
     }
 
     /// Make number from char 'ch'
@@ -146,7 +160,7 @@ private:
         if (command == "sqrt") return sqrt(a);
         if (command == "sin") return sin(a);
         if (command == "cos") return cos(a);
-        //if (command == "abs") return abs(a);
+        if (command == "abs") return abs(a);
         if (command == "exp") return exp(a);
         if (command == "cbrt") return cbrt(a);
         if (command == "tan") return tan(a);
@@ -168,6 +182,7 @@ private:
         string S = "";
         char prev_ch = -1;
         int brackets = 0;
+        int modules = 0;
 
         if (DEBUG_LOG) cout << "\n === Start Debug log === \n\nBefore formatting: " << s << "\nAfter formatting : ";
 
@@ -176,19 +191,45 @@ private:
             if (ch == ' ') {
                 continue;
             }
+
             if (ch == ':') {
                 ch = '/';
             }
+
             if (ch == '(') brackets++;
+
             if (ch == ')') {
-                if (brackets == 0 || prev_ch == '(') {
+                if (brackets == 0) {
+                    S = '(' + S;
+                    brackets++;
+                }
+                if (prev_ch == '(') {
                     cout << "Compilition error! Wrong bracket sequence";
                     _break_();
                 }
                 brackets--;
             }
+
             if (isLet(ch)) {
+                if (isNum(prev_ch)) {
+                    S += '*';
+                }
                 ch = toLow(ch);
+            }
+
+            if (ch == '|') {
+                if (modules == 0 || (!isNum(prev_ch) && prev_ch != '|')) {
+                    if (isNum(prev_ch)) {
+                        S += '*';
+                    }
+                    S += "abs(";
+                    modules++;
+                } else {
+                    S += ')';
+                    modules--;
+                }
+                prev_ch = ch;
+                continue;
             }
 
             if (prev_ch == -1) {
@@ -199,37 +240,55 @@ private:
                 prev_ch = ch;
                 continue;
             }
+
             if (ch == '(' && (prev_ch == ')' || isNum(prev_ch))) {
                 S += '*';
             }
+
             if (ch == '-') {
                 if (prev_ch == '(') {
                     S += '0';
-                } else if (!isNum(prev_ch) && prev_ch != ')') {
+                } else if (!isNum(prev_ch) && prev_ch != ')' && prev_ch != '|') {
                     cout << "Compilition error! Illegal operator befor '-':";
                     i--;
                     _break_();
                 }
             }
+
             if (ch == '+' && !isNum(prev_ch) && prev_ch != ')') {
                 continue;
             }
+
             if (isNum(ch) && prev_ch == ')') {
                 S += '*';
             }
+
             if (ch == '.') {
                 if (prev_ch == ')') {
                     S += '*';
                 }
-                S += '0';
+                if (!isNum(prev_ch)) {
+                    S += '0';
+                }
             }
+
             S += ch;
             prev_ch = ch;
         }
 
         if (brackets != 0) {
-            cout << "Compilition error! Wrong bracket sequence";
-            _break_();
+            int bra = brackets;
+            while (bra > 0) {
+                S += ')';
+                bra--;
+            }
+            while (bra < 0) {
+                S = "(" + S;
+                bra++;
+            }
+
+            /*cout << S << " : " << bra << "Compilition error! Wrong bracket sequence";
+            _break_();*/
         }
 
         if (DEBUG_LOG) cout << S << "\n";
@@ -268,7 +327,7 @@ private:
                     }
                 }
 
-                push(res, num);
+                push(res, num, 1);
 
                 if (i >= s.length()) break;
             }
@@ -296,13 +355,13 @@ private:
                         ch = s[++i];
                     }
                 } else {
-                    while (isNum(ch)) {
+                    while (isNum(ch) || ch == '.') {
                         exp += ch;
                         ch = s[++i];
                     }
                 }
 
-                push(res, doCommand(command, parse(exp, DEBUG_LOG)));
+                push(res, doCommand(command, parse(exp, DEBUG_LOG)), 1);
 
                 if (i >= s.length()) break;
             }
@@ -310,20 +369,20 @@ private:
             int priority_ch = priority(ch);
 
             if (isEmpty(ops) || priority_ch > priority((*ops).field) || ((*ops).field == '(' && ch != ')')) {
-                push(ops, ch);
+                push(ops, ch, 0);
             } else {
 
                 if (ch == ')') {
                     while ((*ops).field != '(') {
-                        push(res, doit(pop(ops)));
+                        push(res, doit(pop(ops)), 1);
                     }
                     pop(ops);
 
                 } else {
                     while (!isEmpty(ops) && (*ops).field != '(' && priority_ch <= priority((*ops).field)) {
-                        push(res, doit(pop(ops)));
+                        push(res, doit(pop(ops)), 1);
                     }
-                    push(ops, ch);
+                    push(ops, ch, 0);
                 }
             }
         }
@@ -331,7 +390,7 @@ private:
         if (DEBUG_LOG) cout << "End reading line\n";
 
         while (ops != NULL) {
-            push(res, doit(pop(ops)));
+            push(res, doit(pop(ops)), 1);
         }
 
         if (DEBUG_LOG) cout << "\n === End Debug log ===\n\n\n";
@@ -369,4 +428,4 @@ double parse(const string& _s) {
     return parse(_s, 0);
 }
 
-#endif // PARSE_H_INCLUDED
+#endif /// PARSE_H_INCLUDED
