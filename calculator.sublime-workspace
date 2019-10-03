@@ -1,0 +1,450 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"incl",
+				"include_once"
+			],
+			[
+				"pr",
+				"project"
+			],
+			[
+				"for",
+				"foreach\tforeach …"
+			],
+			[
+				"pop",
+				"popular"
+			],
+			[
+				"back",
+				"background-color\tproperty"
+			],
+			[
+				"bo",
+				"bottom\tproperty"
+			],
+			[
+				"borde",
+				"border-color\tproperty"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "main.cpp",
+			"settings":
+			{
+				"buffer_size": 418,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "input.txt",
+			"settings":
+			{
+				"buffer_size": 3,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "qparse.h",
+			"settings":
+			{
+				"buffer_size": 477,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "parse.h",
+			"settings":
+			{
+				"buffer_size": 12796,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/C++/C++ Single File.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/C++ Starting Kit/C++ - Starting Kit.sublime-build",
+					""
+				],
+				[
+					"Packages/C++ Starting Kit/C++ - Starting Kit.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/c++.sublime-build",
+					""
+				],
+				[
+					"Packages/User/c++.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C++ Single File.sublime-build",
+				"Run"
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"view me",
+				"View: Toggle Menu"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"stat",
+				"Git: Status"
+			],
+			[
+				"pack",
+				"Install Package Control"
+			],
+			[
+				"sch",
+				"UI: Select Color Scheme"
+			],
+			[
+				"sche",
+				"UI: Select Color Scheme"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/timur/prog/c++/calculator"
+	],
+	"file_history":
+	[
+		"/home/timur/prog/c++/struct_number/main.cpp",
+		"/home/timur/prog/c++/#1/main.cpp",
+		"/home/timur/prog/python/today.py",
+		"/home/timur/prog/python/olim.py",
+		"/home/timur/prog/web/portfolio/scripts/footer.js",
+		"/home/timur/prog/web/portfolio/processing/change_theme.php",
+		"/home/timur/prog/web/portfolio/templates/theme_colors.html",
+		"/home/timur/.minecraft/saves/New big city/stats/00000000-0000-0000-0000-000000000000.json",
+		"/home/timur/prog/web/portfolio/allworks.php",
+		"/home/timur/prog/web/portfolio/prices.php",
+		"/home/timur/prog/web/portfolio/feedback.php",
+		"/home/timur/prog/web/portfolio/contacts.php",
+		"/home/timur/prog/web/portfolio/about.php",
+		"/home/timur/prog/web/portfolio/scripts/allworks.js",
+		"/home/timur/prog/web/portfolio/styles/feedback.css",
+		"/home/timur/prog/web/portfolio/feedback.html",
+		"/home/timur/prog/web/portfolio/scripts/feedback.html",
+		"/home/timur/prog/web/portfolio/styles/header.css",
+		"/home/timur/prog/web/portfolio/header.html",
+		"/home/timur/prog/web/portfolio/index.php",
+		"/home/timur/prog/web/portfolio/styles/footer.css",
+		"/home/timur/prog/web/portfolio/change_theme.php",
+		"/home/timur/prog/web/portfolio/footer.html",
+		"/home/timur/prog/web/portfolio/allworks.html",
+		"/home/timur/prog/web/portfolio/styles/dark_theme_colors.css",
+		"/home/timur/prog/web/portfolio/styles/light_theme_colors.css",
+		"/home/timur/prog/web/portfolio/styles/allworks.css",
+		"/home/timur/prog/web/store/scripts/most_popular.json",
+		"/home/timur/prog/web/portfolio/.htaccess",
+		"/home/timur/prog/web/portfolio/new/index.html",
+		"/home/timur/prog/web/portfolio/allworks/index.php",
+		"/home/timur/prog/web/portfolio/styles/.htaccess",
+		"/home/timur/prog/web/portfolio/main.php",
+		"/home/timur/prog/web/portfolio/styles/main.css",
+		"/home/timur/prog/web/portfolio/styles/main_styles.css",
+		"/home/timur/prog/web/portfolio/styles/file.txt",
+		"/home/timur/prog/web/store/main.html",
+		"/home/timur/Prog/HTML & others/store/signin/index.html",
+		"/home/timur/Prog/HTML & others/store/sign_in/home.html",
+		"/media/timur/TRANSFENDER/System Volume Information/WPSettings.dat"
+	],
+	"find":
+	{
+		"height": 27.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"map",
+			"<char,int>"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 2,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "main.cpp",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 418,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								415,
+								415
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "input.txt",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "qparse.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 477,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								371,
+								371
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "parse.h",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12796,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 27.0
+	},
+	"input":
+	{
+		"height": 40.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 127.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "calculator.sublime-project",
+	"replace":
+	{
+		"height": 50.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 214.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

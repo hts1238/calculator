@@ -8,12 +8,24 @@
 
 using namespace std;
 
-double parse(const string& _s, const bool& _DEBUG_LOG);
+double parse(const string& _s, const map<char,double>& _m, const bool& _DEBUG_LOG);
 
 class Parse {
 private:
     int i;
     string s;
+    map<char,double> mapX;
+
+    double getX(const char& ch) {
+        map<char,double>::iterator it = mapX.find(ch);
+        if (it != mapX.end()) {
+            return it->second;
+        } else {
+            cout << "Unknown letter " << ch;
+            cerr << "Unknown letter " << ch;
+            _break_();
+        }
+    }
 
     /// Is debug messages will be showing
     bool DEBUG_LOG;
@@ -123,7 +135,13 @@ private:
         if (DEBUG_LOG) cout << " " << op << "\n";
         double a, b;
 
-        if (!isEmpty(res)) b = pop(res);
+        if (!isEmpty(res)) {
+            if (!res->type) {
+                b = getX((char)pop(res));
+            } else {
+                b = pop(res);
+            }
+        }
         else {
             cout << "res is empty!";
             _break_();
@@ -131,7 +149,13 @@ private:
 
         if (DEBUG_LOG) cout << " " << op << " " << b << "\n";
 
-        if (!isEmpty(res)) a = pop(res);
+        if (!isEmpty(res)) {
+            if (!res->type) {
+                a = getX((char)pop(res));
+            } else {
+                a = pop(res);
+            }
+        }
         else {
             cout << "res is too short!";
             _break_();
@@ -248,7 +272,7 @@ private:
             if (ch == '-') {
                 if (prev_ch == '(') {
                     S += '0';
-                } else if (!isNum(prev_ch) && prev_ch != ')' && prev_ch != '|') {
+                } else if (!isNum(prev_ch) && !isLet(prev_ch) && prev_ch != ')' && prev_ch != '|') {
                     cout << "Compilition error! Illegal operator befor '-':";
                     i--;
                     _break_();
@@ -333,35 +357,43 @@ private:
             }
 
             if (isLet(ch)) {
-                string command = "";
-                while (isLet(ch)) {
-                    command += ch;
-                    ch = s[++i];
-                }
-
-                string exp = "";
-                if (ch == '(') {
-                    exp += '(';
-                    int brackets = 0;
-                    ch = s[++i];
-                    while (brackets >= 0) {
-                        if (ch == '(') {
-                            brackets++;
-                        }
-                        if (ch == ')') {
-                            brackets--;
-                        }
-                        exp += ch;
-                        ch = s[++i];
-                    }
+                if (mapX.find(ch) != mapX.end()) {
+                    push(res, ch, 0);
                 } else {
-                    while (isNum(ch) || ch == '.') {
-                        exp += ch;
+                    string command = "";
+                    while (isLet(ch)) {
+                        command += ch;
                         ch = s[++i];
                     }
-                }
 
-                push(res, doCommand(command, parse(exp, DEBUG_LOG)), 1);
+                    string exp = "";
+                    if (ch == '(') {
+                        exp += '(';
+                        int brackets = 0;
+                        ch = s[++i];
+                        while (brackets >= 0) {
+                            if (ch == '(') {
+                                brackets++;
+                            }
+                            if (ch == ')') {
+                                brackets--;
+                            }
+                            exp += ch;
+                            ch = s[++i];
+                        }
+                    } else {
+                        if (ch == '-') {
+                            exp += '-';
+                            ch = s[++i];
+                        }
+                        while (isNum(ch) || ch == '.') {
+                            exp += ch;
+                            ch = s[++i];
+                        }
+                    }
+                    push(res, doCommand(command, parse(exp, mapX, DEBUG_LOG)), 1);
+                }
+                ch = s[++i];
 
                 if (i >= s.length()) break;
             }
@@ -405,8 +437,10 @@ public:
         s = formatting(s);
     }
 
-    double _parse_() {
-        res = NULL; ops = NULL;
+    double _parse_(const map<char,double>& _m) {
+        res = NULL;
+        ops = NULL;
+        mapX = _m;
 
         main(s);
 
@@ -419,13 +453,23 @@ public:
     }
 };
 
-double parse(const string& _s, const bool& _DEBUG_LOG) {
+double parse(const string& _s, const map<char,double>& _m, const bool& _DEBUG_LOG) {
     Parse P(_s, _DEBUG_LOG);
-    return P._parse_();
+    return P._parse_(_m);
+}
+
+double parse(const string& _s, const map<char,double>& _m) {
+    return parse(_s, _m, 0);
+}
+
+double parse(const string& _s, const bool& _DEBUG_LOG) {
+    map<char,double> _m;
+    return parse(_s, _m, _DEBUG_LOG);
 }
 
 double parse(const string& _s) {
-    return parse(_s, 0);
+    map<char,double> _m;
+    return parse(_s, _m, 0);
 }
 
 #endif /// PARSE_H_INCLUDED
