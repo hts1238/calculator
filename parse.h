@@ -8,14 +8,35 @@
 
 using namespace std;
 
-namespace Parse {
-    int i = 0;
-    string s = "";
+double parse(const string& _s, const map<char,double>& _m, const bool& _DEBUG_LOG);
+
+class Parse {
+private:
+    int i;
+    string s;
+    map<char,double> mapX;
+
+    double getX(const char& ch) {
+        map<char,double>::iterator it = mapX.find(ch);
+        if (it != mapX.end()) {
+            return it->second;
+        } else {
+<<<<<<< HEAD
+            cout << "Unknown letter " << ch << endl;
+            cerr << "Unknown letter " << ch << endl;
+=======
+            cout << "Unknown letter " << ch;
+            cerr << "Unknown letter " << ch;
+>>>>>>> ab12ec7c3be39ded8f906a854e5964f4d1e7ea16
+            _break_();
+        }
+    }
 
     /// Is debug messages will be showing
-    bool DEBUG_LOG = 1;
+    bool DEBUG_LOG;
 
     struct Stack {
+        bool type; /// 0 - char, 1 - number
         double field;
         Stack* next;
     };
@@ -28,9 +49,21 @@ namespace Parse {
         Stack* top1 = res;
         Stack* top2 = ops;
         cout << "\n [ res ] : ";
-        while (top1 != NULL) {cout << top1->field << " "; top1 = top1->next;}
+        while (top1 != NULL) {
+            if (top1->type)
+                cout << (double)top1->field << " ";
+            else
+                cout << (char)top1->field << " ";
+            top1 = top1->next;
+        }
         cout << "\n [ ops ] : ";
-        while (top2 != NULL) {cout << (char)top2->field << " "; top2 = top2->next;}
+        while (top2 != NULL) {
+            if (top2->type)
+                cout << (double)top2->field << " ";
+            else
+                cout << (char)top2->field << " ";
+            top2 = top2->next;
+        }
         cout << "\n";
     }
 
@@ -40,8 +73,9 @@ namespace Parse {
     }
 
     /// Push 'elem' into Stack 'top'
-    void push(Stack*& top, const double& elem) {
+    void push(Stack*& top, const double& elem, const bool& type) {
         Stack* pointer = (Stack*)malloc(sizeof(Stack));
+        (*pointer).type = type;
         (*pointer).field = elem;
         (*pointer).next = top;
         top = pointer;
@@ -63,7 +97,7 @@ namespace Parse {
         for (int j = 0; j < i; j++) cout << " ";
         cout << "^";
         if (DEBUG_LOG) cout << "\n\n === End Debug log ===\n";
-        exit(-1);
+        exit(1);
     }
 
     /// Make number from char 'ch'
@@ -76,6 +110,16 @@ namespace Parse {
         return 0 <= toNum(ch) && toNum(ch) <= 9;
     }
 
+    /// Make lowercase from char 'ch'
+    char toLow(const char& ch) {
+        return ('a' <= ch && ch <= 'z') ? ch : ch - 'A' + 'a';
+    }
+
+    /// Check if char 'ch' is letter
+    bool isLet(const char& ch) {
+        return ('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z');
+    }
+
     /// Get priority of the operator 'ch'
     int priority(const char& ch) {
         if (ch == ')') return 0;
@@ -83,7 +127,7 @@ namespace Parse {
         if (ch == '-') return 1;
         if (ch == '*') return 2;
         if (ch == '/') return 2;
-        if (ch == '^') return 3;
+        if (ch == '^') return 4;
         if (ch == '(') return 99;
 
         cout << "Compilition error; Illegal operator '" << (char)ch << "'";
@@ -96,7 +140,13 @@ namespace Parse {
         if (DEBUG_LOG) cout << " " << op << "\n";
         double a, b;
 
-        if (!isEmpty(res)) b = pop(res);
+        if (!isEmpty(res)) {
+            if (!res->type) {
+                b = getX((char)pop(res));
+            } else {
+                b = pop(res);
+            }
+        }
         else {
             cout << "res is empty!";
             _break_();
@@ -104,7 +154,13 @@ namespace Parse {
 
         if (DEBUG_LOG) cout << " " << op << " " << b << "\n";
 
-        if (!isEmpty(res)) a = pop(res);
+        if (!isEmpty(res)) {
+            if (!res->type) {
+                a = getX((char)pop(res));
+            } else {
+                a = pop(res);
+            }
+        }
         else {
             cout << "res is too short!";
             _break_();
@@ -116,11 +172,11 @@ namespace Parse {
         if (op == '-') return a - b;
         if (op == '*') return a * b;
         if (op == '/') {
-        	if (b == 0) {
-        		cout << "Time error! Division by zero!";
-        		_break_();
-        	}
-        	return a / b;
+            if (b == 0) {
+                cout << "Time error! Division by zero!";
+                _break_();
+            }
+            return a / b;
         }
 
         if (op == '^') return pow(a, b);
@@ -128,11 +184,34 @@ namespace Parse {
         return 0; // This line will be never called
     }
 
+    /// Calculate number 'a' using function 'command'
+    double doCommand(const string& command, const double& a) {
+        if (command == "sqrt") return sqrt(a);
+        if (command == "sin") return sin(a);
+        if (command == "cos") return cos(a);
+        if (command == "abs") return abs(a);
+        if (command == "exp") return exp(a);
+        if (command == "cbrt") return cbrt(a);
+        if (command == "tan") return tan(a);
+        if (command == "log") return log(a);
+        //if (command == "log2") return log2(a);
+        //if (command == "log10") return log10(a);
+        if (command == "arcsin") return asin(a);
+        if (command == "arccos") return acos(a);
+        if (command == "arctan") return atan(a);
+
+        cout << "Compilition error! Illegal function " << command;
+        _break_();
+
+        return 0;
+    }
+
     /// Formatting expretion
     string formatting(const string& s) {
         string S = "";
         char prev_ch = -1;
         int brackets = 0;
+        int modules = 0;
 
         if (DEBUG_LOG) cout << "\n === Start Debug log === \n\nBefore formatting: " << s << "\nAfter formatting : ";
 
@@ -141,16 +220,45 @@ namespace Parse {
             if (ch == ' ') {
                 continue;
             }
+
             if (ch == ':') {
-            	ch = '/';
+                ch = '/';
             }
+
             if (ch == '(') brackets++;
+
             if (ch == ')') {
-                if (brackets == 0 || prev_ch == '(') {
+                if (brackets == 0) {
+                    S = '(' + S;
+                    brackets++;
+                }
+                if (prev_ch == '(') {
                     cout << "Compilition error! Wrong bracket sequence";
                     _break_();
                 }
                 brackets--;
+            }
+
+            if (isLet(ch)) {
+                if (isNum(prev_ch)) {
+                    S += '*';
+                }
+                ch = toLow(ch);
+            }
+
+            if (ch == '|') {
+                if (modules == 0 || (!isNum(prev_ch) && prev_ch != '|')) {
+                    if (isNum(prev_ch)) {
+                        S += '*';
+                    }
+                    S += "abs(";
+                    modules++;
+                } else {
+                    S += ')';
+                    modules--;
+                }
+                prev_ch = ch;
+                continue;
             }
 
             if (prev_ch == -1) {
@@ -161,44 +269,63 @@ namespace Parse {
                 prev_ch = ch;
                 continue;
             }
+
             if (ch == '(' && (prev_ch == ')' || isNum(prev_ch))) {
                 S += '*';
             }
+
             if (ch == '-') {
                 if (prev_ch == '(') {
                     S += '0';
-                } else if (!isNum(prev_ch) && prev_ch != ')') {
+                } else if (!isNum(prev_ch) && !isLet(prev_ch) && prev_ch != ')' && prev_ch != '|') {
                     cout << "Compilition error! Illegal operator befor '-':";
                     i--;
                     _break_();
                 }
             }
+
             if (ch == '+' && !isNum(prev_ch) && prev_ch != ')') {
                 continue;
             }
+
             if (isNum(ch) && prev_ch == ')') {
                 S += '*';
             }
+
             if (ch == '.') {
-            	if (prev_ch == ')') {
-            		S += '*';
-            	}
-            	S += '0';
+                if (prev_ch == ')') {
+                    S += '*';
+                }
+                if (!isNum(prev_ch)) {
+                    S += '0';
+                }
             }
+
             S += ch;
             prev_ch = ch;
         }
 
         if (brackets != 0) {
-            cout << "Compilition error! Wrong bracket sequence";
-            _break_();
+            int bra = brackets;
+            while (bra > 0) {
+                S += ')';
+                bra--;
+            }
+            while (bra < 0) {
+                S = "(" + S;
+                bra++;
+            }
+
+            /*cout << S << " : " << bra << "Compilition error! Wrong bracket sequence";
+            _break_();*/
         }
 
         if (DEBUG_LOG) cout << S << "\n";
 
         if (S.length() == 0) {
             cout << "Expretion is empty";
-            _break_();
+            if (DEBUG_LOG) cout << "\n\n === End Debug log ===\n";
+            exit(0);
         }
 
         return S;
@@ -206,51 +333,93 @@ namespace Parse {
 
     /// Main parsing
     void main(const string& s) {
-    	for (i = 0; i < s.length(); i++) {
+        for (i = 0; i < s.length(); i++) {
             char ch = s[i];
 
             if (isNum(ch)) {
 
-            	double num = 0;
-            	long long k = 10;
+                double num = 0;
+                long long k = 10;
 
-	            while (isNum(ch)) {
-	            	num *= 10;
-	            	num += toNum(ch);
-	            	ch = s[++i];
-	            }
+                while (isNum(ch)) {
+                    num *= 10;
+                    num += toNum(ch);
+                    ch = s[++i];
+                }
 
-	            if (ch == '.') {
-	            	ch = s[++i];
-	            	while (isNum(ch)) {
-	            		num += (double)toNum(ch) / k;
-	            		k *= 10;
-	            		ch = s[++i];
-	            	}
-	            }
+                if (ch == '.') {
+                    ch = s[++i];
+                    while (isNum(ch)) {
+                        num += (double)toNum(ch) / k;
+                        k *= 10;
+                        ch = s[++i];
+                    }
+                }
 
-	            push(res, num);
+                push(res, num, 1);
 
-	            if (i >= s.length()) break;
-	        }
+                if (i >= s.length()) break;
+            }
+
+            if (isLet(ch)) {
+                if (mapX.find(ch) != mapX.end()) {
+                    push(res, ch, 0);
+                } else {
+                    string command = "";
+                    while (isLet(ch)) {
+                        command += ch;
+                        ch = s[++i];
+                    }
+
+                    string exp = "";
+                    if (ch == '(') {
+                        exp += '(';
+                        int brackets = 0;
+                        ch = s[++i];
+                        while (brackets >= 0) {
+                            if (ch == '(') {
+                                brackets++;
+                            }
+                            if (ch == ')') {
+                                brackets--;
+                            }
+                            exp += ch;
+                            ch = s[++i];
+                        }
+                    } else {
+                        if (ch == '-') {
+                            exp += '-';
+                            ch = s[++i];
+                        }
+                        while (isNum(ch) || ch == '.') {
+                            exp += ch;
+                            ch = s[++i];
+                        }
+                    }
+                    push(res, doCommand(command, parse(exp, mapX, DEBUG_LOG)), 1);
+                }
+                ch = s[++i];
+
+                if (i >= s.length()) break;
+            }
 
             int priority_ch = priority(ch);
 
-            if (isEmpty(ops) || priority_ch > priority((*ops).field) || ((*ops).field == '(' && ch != ')')) {
-                push(ops, ch);
+            if (isEmpty(ops) || priority_ch > priority((*ops).field) || (ch == '^' && (*ops).field == '^')) {
+                push(ops, ch, 0);
             } else {
 
                 if (ch == ')') {
                     while ((*ops).field != '(') {
-                        push(res, doit(pop(ops)));
+                        push(res, doit(pop(ops)), 1);
                     }
                     pop(ops);
 
                 } else {
                     while (!isEmpty(ops) && (*ops).field != '(' && priority_ch <= priority((*ops).field)) {
-                        push(res, doit(pop(ops)));
+                        push(res, doit(pop(ops)), 1);
                     }
-                    push(ops, ch);
+                    push(ops, ch, 0);
                 }
             }
         }
@@ -258,29 +427,66 @@ namespace Parse {
         if (DEBUG_LOG) cout << "End reading line\n";
 
         while (ops != NULL) {
-            push(res, doit(pop(ops)));
+            push(res, doit(pop(ops)), 1);
         }
 
         if (DEBUG_LOG) cout << "\n === End Debug log ===\n\n\n";
     }
-};
 
-using namespace Parse;
+public:
+    Parse(const string& _s, const bool& _DEBUG_LOG) {
+        i = 0;
+        s = _s;
+        DEBUG_LOG = _DEBUG_LOG;
 
-double parse(const string& _s, const bool& _DEBUG_LOG) {
-	res = NULL; ops = NULL;
-    s = _s; DEBUG_LOG = _DEBUG_LOG;
-
-    s = formatting(s);
-
-    main(s);
-
-    if ((*res).next != NULL) {
-        cout << "Something is wrong, sorry ((";
-        _break_();
+        s = formatting(s);
     }
 
-    return (*res).field;
+    double _parse_(const map<char,double>& _m) {
+<<<<<<< HEAD
+        res = NULL;
+=======
+        res = NULL;
+>>>>>>> ab12ec7c3be39ded8f906a854e5964f4d1e7ea16
+        ops = NULL;
+        mapX = _m;
+
+        main(s);
+
+        if ((*res).next != NULL) {
+            cout << "Something is wrong, sorry ((";
+            _break_();
+        }
+
+        return (*res).field;
+    }
+};
+
+double parse(const string& _s, const map<char,double>& _m, const bool& _DEBUG_LOG) {
+    Parse P(_s, _DEBUG_LOG);
+    return P._parse_(_m);
 }
 
-#endif // PARSE_H_INCLUDED
+double parse(const string& _s, const map<char,double>& _m) {
+    return parse(_s, _m, 0);
+}
+
+<<<<<<< HEAD
+double parse(const string& _s, const bool& _DEBUG_LOG) {
+=======
+double parse(const string& _s, const bool& _DEBUG_LOG) {
+>>>>>>> ab12ec7c3be39ded8f906a854e5964f4d1e7ea16
+    map<char,double> _m;
+    return parse(_s, _m, _DEBUG_LOG);
+}
+
+<<<<<<< HEAD
+double parse(const string& _s) {
+=======
+double parse(const string& _s) {
+>>>>>>> ab12ec7c3be39ded8f906a854e5964f4d1e7ea16
+    map<char,double> _m;
+    return parse(_s, _m, 0);
+}
+
+#endif /// PARSE_H_INCLUDED
