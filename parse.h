@@ -21,8 +21,13 @@ private:
         if (it != mapX.end()) {
             return it->second;
         } else {
+<<<<<<< HEAD
             cout << "Unknown letter " << ch << endl;
             cerr << "Unknown letter " << ch << endl;
+=======
+            cout << "Unknown letter " << ch;
+            cerr << "Unknown letter " << ch;
+>>>>>>> ab12ec7c3be39ded8f906a854e5964f4d1e7ea16
             _break_();
         }
     }
@@ -438,7 +443,11 @@ public:
     }
 
     double _parse_(const map<char,double>& _m) {
+<<<<<<< HEAD
         res = NULL;
+=======
+        res = NULL;
+>>>>>>> ab12ec7c3be39ded8f906a854e5964f4d1e7ea16
         ops = NULL;
         mapX = _m;
 
@@ -462,12 +471,20 @@ double parse(const string& _s, const map<char,double>& _m) {
     return parse(_s, _m, 0);
 }
 
+<<<<<<< HEAD
 double parse(const string& _s, const bool& _DEBUG_LOG) {
+=======
+double parse(const string& _s, const bool& _DEBUG_LOG) {
+>>>>>>> ab12ec7c3be39ded8f906a854e5964f4d1e7ea16
     map<char,double> _m;
     return parse(_s, _m, _DEBUG_LOG);
 }
 
+<<<<<<< HEAD
 double parse(const string& _s) {
+=======
+double parse(const string& _s) {
+>>>>>>> ab12ec7c3be39ded8f906a854e5964f4d1e7ea16
     map<char,double> _m;
     return parse(_s, _m, 0);
 }
