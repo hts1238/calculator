@@ -21,8 +21,8 @@ private:
         if (it != mapX.end()) {
             return it->second;
         } else {
-            cout << "Unknown letter " << ch;
-            cerr << "Unknown letter " << ch;
+            cout << "Unknown letter " << ch << endl;
+            cerr << "Unknown letter " << ch << endl;
             _break_();
         }
     }
@@ -122,7 +122,7 @@ private:
         if (ch == '-') return 1;
         if (ch == '*') return 2;
         if (ch == '/') return 2;
-        if (ch == '^') return 3;
+        if (ch == '^') return 4;
         if (ch == '(') return 99;
 
         cout << "Compilition error; Illegal operator '" << (char)ch << "'";
@@ -400,7 +400,7 @@ private:
 
             int priority_ch = priority(ch);
 
-            if (isEmpty(ops) || priority_ch > priority((*ops).field) || ((*ops).field == '(' && ch != ')')) {
+            if (isEmpty(ops) || priority_ch > priority((*ops).field) || (ch == '^' && (*ops).field == '^')) {
                 push(ops, ch, 0);
             } else {
 
